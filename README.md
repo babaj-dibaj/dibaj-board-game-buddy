@@ -4,7 +4,7 @@ Aplikasi asisten panduan dan evaluasi aturan board game berbasis **Spring AI** y
 
 ---
 
-## 🎯 Fitur Implementasi
+## Fitur Implementasi
 
 ### 1. Chapter 1: Tanya Jawab Aturan Permainan
 - Menggunakan `ChatClient` dari Spring AI untuk menghubungkan model bahasa lokal (Ollama / `llama3.2`) atau OpenAI.
@@ -19,7 +19,7 @@ Aplikasi asisten panduan dan evaluasi aturan board game berbasis **Spring AI** y
 
 ---
 
-## 🏗️ Struktur Arsitektur & Class
+## Struktur Arsitektur & Class
 
 ```
 com.dibaj.dibajboardgamebuddy
@@ -39,7 +39,7 @@ com.dibaj.dibajboardgamebuddy
 
 ---
 
-## 🚀 Menjalankan Aplikasi
+## Menjalankan Aplikasi
 
 ### Prasyarat
 1. **Java 21** (JDK 21)
@@ -51,13 +51,13 @@ com.dibaj.dibajboardgamebuddy
 ```
 
 Aplikasi akan berjalan di:
-👉 **http://localhost:8080**
+ **http://localhost:8080**
 
 Tersedia antarmuka web modern dengan 4 mode pengujian interaktif untuk Chapter 1 dan Chapter 2.
 
 ---
 
-## 🧪 Pengujian via Terminal / cURL
+## Pengujian via Terminal / cURL
 
 ### 1. Tanya Jawab (Chapter 1)
 ```powershell
