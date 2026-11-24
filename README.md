@@ -89,7 +89,7 @@ curl.exe -X POST http://localhost:8080/evaluate/factual `
 
 ---
 
-## 👥 Pengembang & Lisensi
+## Pengembang & Lisensi
 - Mahasiswa: Dibaj
 - Repositori: [https://github.com/babaj-dibaj/dibaj-board-game-buddy](https://github.com/babaj-dibaj/dibaj-board-game-buddy)
 - Referensi Buku: *Spring AI in Action* oleh Craig Walls
