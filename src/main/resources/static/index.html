@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Board Game Buddy — Panduan & Evaluasi Aturan Permainan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0b0f17;
+            --bg-card: #121824;
+            --bg-input: #0a0d14;
+            --bg-hover: #1a2334;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-active: #3b82f6;
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-muted: rgba(37, 99, 235, 0.15);
+            --tag-bg: #1e293b;
+            --tag-text: #cbd5e1;
+            --success-bg: rgba(16, 185, 129, 0.12);
+            --success-border: rgba(16, 185, 129, 0.3);
+            --success-text: #34d399;
+            --danger-bg: rgba(239, 68, 68, 0.12);
+            --danger-border: rgba(239, 68, 68, 0.3);
+            --danger-text: #f87171;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 48px 20px 80px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* ── Header ── */
+        .header {
+            margin-bottom: 36px;
+            text-align: left;
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .app-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #93c5fd;
+            background: rgba(37, 99, 235, 0.18);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            max-width: 600px;
+        }
+
+        /* ── Navigation Tabs ── */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: #0f1522;
+            padding: 5px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 24px;
+        }
+        @media (max-width: 680px) {
+            .tabs {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .tab {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .tab-caption {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .tab.active {
+            background: var(--bg-card);
+            border-color: var(--border-subtle);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .tab.active .tab-caption {
+            color: #60a5fa;
+        }
+
+        /* ── Main Card ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        /* ── Mode Info Strip ── */
+        .info-strip {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .info-tag {
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        /* ── Form Elements ── */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.01em;
+        }
+        .label-hint {
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .grid-eval {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 640px) {
+            .grid-eval {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Action Button ── */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn-primary {
+            background: var(--accent-primary);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 11px 22px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.08s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        .btn-primary:active {
+            transform: scale(0.99);
+        }
+        .btn-primary:disabled {
+            background: #1e293b;
+            color: #64748b;
+            cursor: not-allowed;
+            border-color: transparent;
+        }
+
+        /* ── Result Container ── */
+        .result-box {
+            display: none;
+        }
+        .result-box.visible {
+            display: block;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 20px;
+        }
+        .result-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+        }
+        .btn-copy {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-copy:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        /* ── Output Presentation ── */
+        .content-body {
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            line-height: 1.8;
+        }
+        .content-body h3, .content-body h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #ffffff;
+            margin: 24px 0 10px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .content-body strong {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .content-body ul, .content-body ol {
+            margin: 14px 0 18px 24px;
+        }
+        .content-body li {
+            margin-bottom: 6px;
+        }
+        .content-body p {
+            margin-bottom: 16px;
+        }
+
+        /* ── Evaluation Card ── */
+        .eval-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            margin-bottom: 18px;
+        }
+        .eval-status.pass {
+            background: var(--success-bg);
+            border-color: var(--success-border);
+            color: var(--success-text);
+        }
+        .eval-status.fail {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger-text);
+        }
+        .eval-tag {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.25);
+            margin-right: 10px;
+        }
+        .eval-score {
+            font-size: 1.15rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .eval-desc {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+        }
+        .eval-desc h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .eval-desc p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Minimal Loader ── */
+        .loader {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 16px 0;
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Footer ── */
+        .footer {
+            margin-top: 48px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <span class="app-badge">Spring AI in Action</span>
+        </div>
+        <h1>Board Game Buddy</h1>
+        <p>Aplikasi panduan aturan permainan papan dan verifikasi relevansi dokumen berdasarkan referensi Chapter 1 &amp; 2.</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs" role="tablist">
+        <button class="tab active" data-mode="ask" type="button">
+            <span class="tab-caption">Chapter 1</span>
+            Tanya Aturan
+        </button>
+        <button class="tab" data-mode="evaluated" type="button">
+            <span class="tab-caption">Chapter 2</span>
+            Tanya &amp; Validasi
+        </button>
+        <button class="tab" data-mode="relevancy" type="button">
+            <span class="tab-caption">Chapter 2</span>
+            Uji Relevansi
+        </button>
+        <button class="tab" data-mode="factual" type="button">
+            <span class="tab-caption">Chapter 2</span>
+            Akurasi Faktual
+        </button>
+    </nav>
+
+    <!-- Main Card -->
+    <section class="card">
+        <!-- Info Strip -->
+        <div class="info-strip">
+            <span class="info-tag" id="modeTitle">Chapter 1: Tanya Jawab</span>
+            <span id="modeDescription">Menyusun ringkasan aturan permainan papan secara runtut.</span>
+        </div>
+
+        <form id="gameForm">
+            <!-- Question Input -->
+            <div class="form-group">
+                <label class="form-label" for="questionInput">
+                    <span>Pertanyaan Aturan Game</span>
+                    <span class="label-hint">Nama board game &amp; aspek yang ditanyakan</span>
+                </label>
+                <textarea id="questionInput" rows="3" placeholder="Contoh: How do I play Ticket to Ride?">How do I play Ticket to Ride?</textarea>
+            </div>
+
+            <!-- Chapter 2 Specific: Claim & Reference Document -->
+            <div id="evalGroup" style="display: none;">
+                <div class="grid-eval">
+                    <div class="form-group">
+                        <label class="form-label" for="answerInput">
+                            <span>Pernyataan / Jawaban</span>
+                            <span class="label-hint">Klaim yang akan diuji</span>
+                        </label>
+                        <textarea id="answerInput" rows="4">Ticket to Ride is a railway-themed board game where players collect train cards and claim railway routes across the board.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contextInput">
+                            <span>Dokumen Referensi</span>
+                            <span class="label-hint">Teks acuan pembanding</span>
+                        </label>
+                        <textarea id="contextInput" rows="4">Ticket to Ride is a cross-country train adventure in which players collect and play matching train cards to claim railway routes connecting cities.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button class="btn-primary" id="actionBtn" type="button">
+                    <span id="btnLabel">Kirim Pertanyaan</span>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Result Display Card -->
+    <section class="card result-box" id="resultCard">
+        <div class="result-header">
+            <span class="result-title" id="outputHeading">Hasil Respons</span>
+            <button class="btn-copy" id="copyAction" type="button">Salin Teks</button>
+        </div>
+        <div id="outputArea">
+            <!-- Dynamic Result -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        Craig Walls — Spring AI in Action • Board Game Buddy
+    </footer>
+
+</div>
+
+<script>
+    const tabs          = document.querySelectorAll('.tab');
+    const modeTitle     = document.getElementById('modeTitle');
+    const modeDesc      = document.getElementById('modeDescription');
+    const evalGroup     = document.getElementById('evalGroup');
+    const questionInput = document.getElementById('questionInput');
+    const answerInput   = document.getElementById('answerInput');
+    const contextInput  = document.getElementById('contextInput');
+    const actionBtn     = document.getElementById('actionBtn');
+    const btnLabel      = document.getElementById('btnLabel');
+    const resultCard    = document.getElementById('resultCard');
+    const outputHeading = document.getElementById('outputHeading');
+    const outputArea    = document.getElementById('outputArea');
+    const copyAction    = document.getElementById('copyAction');
+
+    let currentMode = 'ask';
+    let rawTextOutput = '';
+
+    const configs = {
+        ask: {
+            title: 'Chapter 1: Tanya Jawab',
+            desc: 'Menjawab pertanyaan seputar cara bermain, komponen, dan skenario permainan.',
+            showEval: false,
+            button: 'Kirim Pertanyaan',
+            heading: 'Panduan Aturan',
+            defaults: {
+                question: 'How do I play Ticket to Ride?'
+            }
+        },
+        evaluated: {
+            title: 'Chapter 2: Tanya & Validasi Internal',
+            desc: 'Model menghasilkan jawaban lalu mengevaluasi sendiri relevansi topik sebelum ditampilkan.',
+            showEval: false,
+            button: 'Kirim & Validasi',
+            heading: 'Panduan Terverifikasi',
+            defaults: {
+                question: 'What are the rules of Catan?'
+            }
+        },
+        relevancy: {
+            title: 'Chapter 2: Uji Relevansi Jawaban',
+            desc: 'Memverifikasi apakah respons selaras dengan pertanyaan dan konteks yang diberikan.',
+            showEval: true,
+            button: 'Jalankan Evaluasi',
+            heading: 'Hasil Evaluasi Relevansi',
+            defaults: {
+                question: 'What is Ticket to Ride?',
+                answer: 'Ticket to Ride is a railway-themed board game where players collect train cards and claim railway routes across the board.',
+                context: 'Ticket to Ride is a cross-country train adventure in which players collect and play matching train cards to claim railway routes connecting cities.'
+            }
+        },
+        factual: {
+            title: 'Chapter 2: Verifikasi Akurasi Fakta',
+            desc: 'Membandingkan klaim secara langsung terhadap dokumen acuan untuk mencegah halusinasi data.',
+            showEval: true,
+            button: 'Verifikasi Fakta',
+            heading: 'Hasil Verifikasi Faktual',
+            defaults: {
+                question: 'What is Ticket to Ride?',
+                answer: 'Ticket to Ride is a railway-building board game.',
+                context: 'Ticket to Ride is a railway-building board game where players collect train cards and claim routes.'
+            }
+        }
+    };
+
+    // Tab Navigation
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            changeMode(tab.dataset.mode);
+        });
+    });
+
+    function changeMode(mode) {
+        currentMode = mode;
+        const c = configs[mode];
+
+        modeTitle.textContent = c.title;
+        modeDesc.textContent  = c.desc;
+        btnLabel.textContent   = c.button;
+        evalGroup.style.display = c.showEval ? 'block' : 'none';
+
+        if (c.defaults) {
+            questionInput.value = c.defaults.question || '';
+            if (c.defaults.answer) answerInput.value = c.defaults.answer;
+            if (c.defaults.context) contextInput.value = c.defaults.context;
+        }
+
+        resultCard.classList.remove('visible');
+    }
+
+    // Markdown Parser (Clean Editorial)
+    function parseToArticle(text) {
+        if (!text) return '<p><em>Tidak ada konten.</em></p>';
+
+        let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        s = s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+        s = s.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+        s = s.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
+        s = s.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+
+        const parts = s.split(/\n\n+/).filter(Boolean);
+        return parts.map(p => {
+            if (p.startsWith('<ul>') || p.startsWith('<h3>') || p.startsWith('<h4>')) return p;
+            return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+        }).join('');
+    }
+
+    // Submit Request
+    actionBtn.addEventListener('click', async () => {
+        actionBtn.disabled = true;
+        resultCard.classList.add('visible');
+        outputHeading.textContent = 'Memproses';
+        outputArea.innerHTML = `
+            <div class="loader">
+                <div class="spinner"></div>
+                <span>Sedang menghubungi layanan dan memproses dokumen...</span>
+            </div>
+        `;
+
+        let endpoint, payload;
+        if (currentMode === 'ask' || currentMode === 'evaluated') {
+            endpoint = currentMode === 'ask' ? '/ask' : '/ask/evaluated';
+            payload  = { question: questionInput.value.trim() };
+        } else {
+            endpoint = '/evaluate/' + currentMode;
+            payload  = {
+                question: questionInput.value.trim(),
+                answer:   answerInput.value.trim(),
+                context:  contextInput.value.split('\n').map(l => l.trim()).filter(Boolean)
+            };
+        }
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const raw = await res.text();
+            let data;
+            try { data = JSON.parse(raw); } catch { data = raw; }
+
+            if (!res.ok) {
+                const message = data?.answer || data?.message || raw;
+                throw new Error(message);
+            }
+
+            const c = configs[currentMode];
+            outputHeading.textContent = c.heading;
+
+            if (currentMode === 'ask' || currentMode === 'evaluated') {
+                const text = typeof data === 'string' ? data : (data.answer || '');
+                rawTextOutput = text;
+                outputArea.innerHTML = `
+                    <div class="content-body">
+                        ${parseToArticle(text)}
+                    </div>
+                `;
+            } else {
+                rawTextOutput = JSON.stringify(data, null, 2);
+                const passed = data.pass === true;
+                const scoreStr = data.score != null ? (data.score * 100).toFixed(0) + '%' : '100%';
+                outputArea.innerHTML = `
+                    <div class="eval-status ${passed ? 'pass' : 'fail'}">
+                        <div>
+                            <span class="eval-tag">${passed ? 'Lolos' : 'Tidak Sesuai'}</span>
+                            <strong>${passed ? 'Kriteria Verifikasi Terpenuhi' : 'Perlu Penyesuaian'}</strong>
+                        </div>
+                        <div class="eval-score">${scoreStr}</div>
+                    </div>
+                    <div class="eval-desc">
+                        <h4>Catatan Hasil Evaluasi</h4>
+                        <p>${data.feedback || (passed ? 'Jawaban selaras dengan konteks dan dokumen acuan.' : 'Ditemukan inkonsistensi terhadap konteks pembanding.')}</p>
+                    </div>
+                `;
+            }
+        } catch (err) {
+            outputHeading.textContent = 'Catatan Status';
+            outputArea.innerHTML = `
+                <div class="eval-status fail">
+                    <div>
+                        <span class="eval-tag">Info</span>
+                        <strong>${err.message}</strong>
+                    </div>
+                </div>
+            `;
+        } finally {
+            actionBtn.disabled = false;
+        }
+    });
+
+    // Copy Action
+    copyAction.addEventListener('click', () => {
+        if (!rawTextOutput) return;
+        navigator.clipboard.writeText(rawTextOutput).then(() => {
+            const orig = copyAction.textContent;
+            copyAction.textContent = 'Tersalin';
+            setTimeout(() => { copyAction.textContent = orig; }, 2000);
+        });
+    });
+
+    // Init
+    changeMode('ask');
+</script>
+
+</body>
+</html>
